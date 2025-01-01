@@ -17,7 +17,7 @@ units:
   kx: 17.4
   ky: 17.4
 
-  # Board spacing (extra padding for edges)
+  # Board_left spacing (extra padding for edges)
   bx: kx + 1.5
   by: ky + 1.5
 
@@ -31,20 +31,35 @@ points:
     spread: 1sx
   zones:
     matrix:
-      anchor.shift: [50,-100] # Fix KiCad placement
+      anchor.shift: [40,-80] # Fix KiCad placement
       columns:
         outer: 
+          key: 
+            column_net: P19
         pinky:
+          key:
+            column_net: P18
         ring:
+          key:
+            column_net: P15
         middle:
-          key.stagger: sy/4
+          key:
+            stagger: sy/4
+            column_net: P14
         index:
-          key.stagger: -sy/2
+          key:
+            stagger: -sy/2
+            column_net: P16
         inner:
+          key:
+            column_net: P10
       rows: 
         bottom:
+          row_net: P8
         home:
+          row_net: P7
         top:
+          row_net: P6
     thumb:
       anchor:
         ref: matrix_outer_bottom
@@ -53,22 +68,33 @@ points:
         first:
           key:
             shift: [sx/4,0]
+            column_net: P19
         second:
-          key.shift: [sx/4,0]
-          rows:
-            only:
-              column_net: P9
+          key:
+            shift: [sx/4,0]
+            column_net: P18
         third:
           key:
             shift: [sx,-sy/2]
+            column_net: P15
         fourth:
-          key.shift: [sx,-sy/2]
+          key:
+            shift: [sx,-sy/2]
+            column_net: P14
         fifth:
-          key.shift: [sx,-sy/2]
+          key:
+            shift: [sx,-sy/2]
+            column_net: P16
         sixth:
-          key.shift: [sx,-sy/2]
+          key:
+            shift: [sx,-sy/2]
+            column_net: P10
       rows:
         only:
+          row_net: P9
+  mirror: &mirror
+    ref: thumb_sixth_only
+    distance: sx+5
 outlines:
   keyholes:
     - what: rectangle
@@ -79,9 +105,10 @@ outlines:
       where: true
       size: [kx, ky]
       corner: 2
-  board:
+  board_left:
     - what: polygon
       operation: stack
+      asym: source
       points:
         - ref: matrix_outer_top
           shift: [-bx/2, by/2]
@@ -108,6 +135,35 @@ outlines:
         - ref: matrix_outer_bottom
           shift: [-bx/2, -by/2]
       fillet: 2
+  board_right:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: mirror_matrix_outer_top
+          shift: [-bx/2, by/2]
+        - ref: mirror_matrix_middle_top
+          shift: [-bx/2, (by/2)-(sy/4)]
+        - ref: mirror_matrix_middle_top
+          shift: [-bx/2, by/2]
+        - ref: mirror_matrix_middle_top
+          shift: [bx/2, by/2]
+        - ref: mirror_matrix_index_top
+          shift: [-sx+bx/2, by/2]
+        - ref: mirror_matrix_inner_top
+          shift: [bx/2+sx, by/2]
+        - ref: mirror_thumb_sixth_only
+          shift: [bx/2, -by/2]
+        - ref: mirror_thumb_third_only
+          shift: [-bx/2, -by/2]
+        - ref: mirror_thumb_third_only
+          shift: [-bx/2, (sy/2)-(by/2)]
+        - ref: mirror_thumb_first_only
+          shift: [-bx/2, -by/2]
+        - ref: mirror_matrix_outer_bottom
+          shift: [-(bx/2)+(sx/4), -by/2]
+        - ref: mirror_matrix_outer_bottom
+          shift: [-bx/2, -by/2]
+      fillet: 2
   outside:
     - what: polygon
       operation: stack
@@ -128,7 +184,7 @@ outlines:
           shift: [-ex/2, -(sy + ey/2)]
       fillet: 4
   omega_plate:
-    - name: board
+    - name: board_left
     - operation: subtract
       name: keyholes
   omega_cover_top:
@@ -137,43 +193,30 @@ outlines:
       name: keycaps
     - operation: subtract
       name: keycaps
-  omega_cover_side:
-    - name: outside
-    - operation: subtract
-      name: board
-    - what: circle
-      radius: 1
-      where: matrix_outer_top
-      adjust.shift: [sx/2, -sy/2]
-      operation: stack
-    - what: circle
-      radius: 1
-      where: thumb_sixth_only
-      adjust.shift: [-sx/2, sy/2]
-      operation: stack
 pcbs:
-  omega_pcb:
+  omega_pcb_left:
     outlines:
-      main:
-        outline: board
+      left:
+        outline: board_left
     footprints:
       choc_hotswap:
         what: choc
-        where: true
+        where: -/^mirror_.*/
+        adjust.rotate: 180
         params:
           keycaps: false
-          reverse: true
+          reverse: false
           hotswap: true
           from: "{{column_net}}"
           to: "{{colrow}}"
       diode:
         what: diode
-        where: true
+        where: -/^mirror_.*/
         params:
           from: "{{colrow}}"
           to: "{{row_net}}"
         adjust:
-          shift: [0, -8]
+          shift: [0, 8.1]
       hole_top_left:
         what: mountinghole
         where: 
@@ -184,10 +227,14 @@ pcbs:
         where: 
           ref: [thumb_sixth_only]
           shift: [-sx/2, sy/2]
-      xiao_ble:
-        what: xiao_ble_smd_reversible
+      nicenano:
+        what: promicro
+        params:
+          orientation: up
+          type: nicenano
+        adjust.rotate: -90
         where:
           ref: matrix_inner_top
-          shift: [sx-0.5, -1]
+          shift: [sx, -9.5]
           rotate: 0
       
