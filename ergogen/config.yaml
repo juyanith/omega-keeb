@@ -1,0 +1,213 @@
+meta:
+  engine: 4.1.0
+units:
+  # Switch spacing
+  sx: 19
+  sy: 19
+
+  # Set key display size
+  $default_width: 19
+  $default_height: 19
+
+  # Switch hole size
+  hx: 13.8
+  hy: 13.8
+
+  # Keycap hole size (top)
+  kx: 17.4
+  ky: 17.4
+
+  # Board spacing (extra padding for edges)
+  bx: kx + 1.5
+  by: ky + 1.5
+
+  # external size
+  ex: sx + 3.5
+  ey: sy + 3.5
+
+points:
+  key:
+    padding: 1sy
+    spread: 1sx
+  zones:
+    matrix:
+      anchor.shift: [50,-100] # Fix KiCad placement
+      columns:
+        outer: 
+        pinky:
+        ring:
+        middle:
+          key.stagger: sy/4
+        index:
+          key.stagger: -sy/2
+        inner:
+      rows: 
+        bottom:
+        home:
+        top:
+    thumb:
+      anchor:
+        ref: matrix_outer_bottom
+        shift: [0,-sy]
+      columns:
+        first:
+          key:
+            shift: [sx/4,0]
+        second:
+          key.shift: [sx/4,0]
+          rows:
+            only:
+              column_net: P9
+        third:
+          key:
+            shift: [sx,-sy/2]
+        fourth:
+          key.shift: [sx,-sy/2]
+        fifth:
+          key.shift: [sx,-sy/2]
+        sixth:
+          key.shift: [sx,-sy/2]
+      rows:
+        only:
+outlines:
+  keyholes:
+    - what: rectangle
+      where: true
+      size: [hx, hy]
+  keycaps:
+    - what: rectangle
+      where: true
+      size: [kx, ky]
+      corner: 2
+  board:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: matrix_outer_top
+          shift: [-bx/2, by/2]
+        - ref: matrix_middle_top
+          shift: [-bx/2, (by/2)-(sy/4)]
+        - ref: matrix_middle_top
+          shift: [-bx/2, by/2]
+        - ref: matrix_middle_top
+          shift: [bx/2, by/2]
+        - ref: matrix_index_top
+          shift: [-sx+bx/2, by/2]
+        - ref: matrix_inner_top
+          shift: [bx/2+sx, by/2]
+        - ref: thumb_sixth_only
+          shift: [bx/2, -by/2]
+        - ref: thumb_third_only
+          shift: [-bx/2, -by/2]
+        - ref: thumb_third_only
+          shift: [-bx/2, (sy/2)-(by/2)]
+        - ref: thumb_first_only
+          shift: [-bx/2, -by/2]
+        - ref: matrix_outer_bottom
+          shift: [-(bx/2)+(sx/4), -by/2]
+        - ref: matrix_outer_bottom
+          shift: [-bx/2, -by/2]
+      fillet: 2
+    - what: circle
+      radius: 1.2
+      where: matrix_outer_top
+      adjust.shift: [sx/2, -sy/2]
+      operation: subtract
+    - what: circle
+      radius: 1.2
+      where: thumb_sixth_only
+      adjust.shift: [-sx/2, sy/2]
+      operation: subtract
+  outside:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: matrix_outer_top
+          shift: [-ex/2, ey/2]
+        - ref: matrix_middle_top
+          shift: [-ex/2, ey/2]
+        - ref: matrix_middle_top
+          shift: [ex/2, ey/2]
+        - ref: matrix_inner_top
+          shift: [ex/2+sy, ey/2]
+        - ref: thumb_sixth_only
+          shift: [ex/2, -ey/2]
+        - ref: thumb_third_only
+          shift: [-sx/2-e/2, -ey/2]
+        - ref: matrix_outer_bottom
+          shift: [-ex/2, -(sy + ey/2)]
+      fillet: 4
+  omega_plate:
+    - name: board
+    - operation: subtract
+      name: keyholes
+  omega_cover_top:
+    - name: outside
+    - operation: stack
+      name: keycaps
+    - operation: subtract
+      name: keycaps
+  omega_cover_side:
+    - name: outside
+    - operation: subtract
+      name: board
+pcbs:
+  omega:
+    template: kicad8
+    outlines:
+      main:
+        outline: board
+    footprints:
+      choc_hotswap:
+        what: ceoloide/switch_choc_v1_v2
+        where: true
+        params:
+          from: =column_net
+          to: GND
+          include_corner_marks: true
+          include_keycap: true
+          keycap_height: sy - 0.5
+          keycap_width: sx - 0.5
+          reversible: true
+          solder: true
+          hotswap: true
+          choc_v2_support: false
+          outer_pad_width_front: 2.0
+          outer_pad_width_back: 2.0
+      mcu:
+        what: ceoloide/mcu_nice_nano
+        where:
+          ref: matrix_inner_home
+        params:
+          reverse_mount: true
+          reversible: true
+          only_required_jumpers: true
+        adjust:
+          shift: [sx, -sy/2]
+      trrs:
+        what: ceoloide/trrs_pj320a
+        where:
+          ref: matrix_inner_home
+          shift: [32, 6.5]
+        params:
+          SL: GND
+          R2: P2
+          TP: VCC # Tip and Ring 1 are joined together
+          reversible: true
+          symmetric: true
+      jlcpcb_order_number_text:
+        what: ceoloide/utility_text
+        where: matrix_inner_bottom
+        params:
+          text: JLCJLCJLCJLC
+          reversible: true
+        adjust:
+          shift: [0,-sy/2 - 1.5]
+      ergogen_logo:
+        what: ceoloide/utility_ergogen_logo
+        where: matrix_middle_bottom
+        params:
+          scale: 2.5
+          reversible: true
+        adjust:
+          shift: [0,-sy]  
