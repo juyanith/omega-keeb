@@ -108,16 +108,6 @@ outlines:
         - ref: matrix_outer_bottom
           shift: [-bx/2, -by/2]
       fillet: 2
-    - what: circle
-      radius: 1.2
-      where: matrix_outer_top
-      adjust.shift: [sx/2, -sy/2]
-      operation: subtract
-    - what: circle
-      radius: 1.2
-      where: thumb_sixth_only
-      adjust.shift: [-sx/2, sy/2]
-      operation: subtract
   outside:
     - what: polygon
       operation: stack
@@ -151,63 +141,53 @@ outlines:
     - name: outside
     - operation: subtract
       name: board
+    - what: circle
+      radius: 1
+      where: matrix_outer_top
+      adjust.shift: [sx/2, -sy/2]
+      operation: stack
+    - what: circle
+      radius: 1
+      where: thumb_sixth_only
+      adjust.shift: [-sx/2, sy/2]
+      operation: stack
 pcbs:
-  omega:
-    template: kicad8
+  omega_pcb:
     outlines:
       main:
         outline: board
     footprints:
       choc_hotswap:
-        what: ceoloide/switch_choc_v1_v2
+        what: choc
         where: true
         params:
-          from: =column_net
-          to: GND
-          include_corner_marks: true
-          include_keycap: true
-          keycap_height: sy - 0.5
-          keycap_width: sx - 0.5
-          reversible: true
-          solder: true
+          keycaps: false
+          reverse: true
           hotswap: true
-          choc_v2_support: false
-          outer_pad_width_front: 2.0
-          outer_pad_width_back: 2.0
-      mcu:
-        what: ceoloide/mcu_nice_nano
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+      diode:
+        what: diode
+        where: true
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [0, -8]
+      hole_top_left:
+        what: mountinghole
+        where: 
+          ref: [matrix_outer_top]
+          shift: [sx/2, -sy/2]
+      hole_bottom_right:
+        what: mountinghole
+        where: 
+          ref: [thumb_sixth_only]
+          shift: [-sx/2, sy/2]
+      xiao_ble:
+        what: xiao_ble_smd_reversible
         where:
-          ref: matrix_inner_home
-        params:
-          reverse_mount: true
-          reversible: true
-          only_required_jumpers: true
-        adjust:
-          shift: [sx, -sy/2]
-      trrs:
-        what: ceoloide/trrs_pj320a
-        where:
-          ref: matrix_inner_home
-          shift: [32, 6.5]
-        params:
-          SL: GND
-          R2: P2
-          TP: VCC # Tip and Ring 1 are joined together
-          reversible: true
-          symmetric: true
-      jlcpcb_order_number_text:
-        what: ceoloide/utility_text
-        where: matrix_inner_bottom
-        params:
-          text: JLCJLCJLCJLC
-          reversible: true
-        adjust:
-          shift: [0,-sy/2 - 1.5]
-      ergogen_logo:
-        what: ceoloide/utility_ergogen_logo
-        where: matrix_middle_bottom
-        params:
-          scale: 2.5
-          reversible: true
-        adjust:
-          shift: [0,-sy]  
+          ref: matrix_inner_top
+          shift: [sx-0.5, -1]
+          rotate: 0
+      
