@@ -196,8 +196,8 @@ pcbs:
           ref: [thumb_sixth_only]
           shift: [-sx/2, sy/2]
       nicenano:
-        what: rev_nano
+        what: rev_nano_batt
         where:
           ref: matrix_inner_top
-          shift: [19.5, -9.5]
+          shift: [19.25, -9.5]
           rotate: 0
