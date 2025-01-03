@@ -17,13 +17,13 @@ units:
   kx: 17.4
   ky: 17.4
 
-  # Board_left spacing (extra padding for edges)
-  bx: kx + 1.5
-  by: ky + 1.5
+  # Board spacing (extra padding for edges)
+  bx: kx + 2.5
+  by: ky + 2.5
 
   # external size
-  ex: sx + 3.5
-  ey: sy + 3.5
+  ex: sx + 3.55
+  ey: sy + 3.55
 
 points:
   key:
@@ -92,9 +92,6 @@ points:
       rows:
         only:
           row_net: P9
-  mirror: &mirror
-    ref: thumb_sixth_only
-    distance: sx+5
 outlines:
   keyholes:
     - what: rectangle
@@ -105,7 +102,7 @@ outlines:
       where: true
       size: [kx, ky]
       corner: 2
-  board_left:
+  board:
     - what: polygon
       operation: stack
       asym: source
@@ -135,35 +132,6 @@ outlines:
         - ref: matrix_outer_bottom
           shift: [-bx/2, -by/2]
       fillet: 2
-  board_right:
-    - what: polygon
-      operation: stack
-      points:
-        - ref: mirror_matrix_outer_top
-          shift: [-bx/2, by/2]
-        - ref: mirror_matrix_middle_top
-          shift: [-bx/2, (by/2)-(sy/4)]
-        - ref: mirror_matrix_middle_top
-          shift: [-bx/2, by/2]
-        - ref: mirror_matrix_middle_top
-          shift: [bx/2, by/2]
-        - ref: mirror_matrix_index_top
-          shift: [-sx+bx/2, by/2]
-        - ref: mirror_matrix_inner_top
-          shift: [bx/2+sx, by/2]
-        - ref: mirror_thumb_sixth_only
-          shift: [bx/2, -by/2]
-        - ref: mirror_thumb_third_only
-          shift: [-bx/2, -by/2]
-        - ref: mirror_thumb_third_only
-          shift: [-bx/2, (sy/2)-(by/2)]
-        - ref: mirror_thumb_first_only
-          shift: [-bx/2, -by/2]
-        - ref: mirror_matrix_outer_bottom
-          shift: [-(bx/2)+(sx/4), -by/2]
-        - ref: mirror_matrix_outer_bottom
-          shift: [-bx/2, -by/2]
-      fillet: 2
   outside:
     - what: polygon
       operation: stack
@@ -184,7 +152,7 @@ outlines:
           shift: [-ex/2, -(sy + ey/2)]
       fillet: 4
   omega_plate:
-    - name: board_left
+    - name: board
     - operation: subtract
       name: keyholes
   omega_cover_top:
@@ -194,29 +162,29 @@ outlines:
     - operation: subtract
       name: keycaps
 pcbs:
-  omega_pcb_left:
+  omega_pcb:
     outlines:
       left:
-        outline: board_left
+        outline: board
     footprints:
       choc_hotswap:
         what: choc
-        where: -/^mirror_.*/
+        where: true
         adjust.rotate: 180
         params:
           keycaps: false
-          reverse: false
+          reverse: true
           hotswap: true
           from: "{{column_net}}"
           to: "{{colrow}}"
       diode:
         what: diode
-        where: -/^mirror_.*/
+        where: true
         params:
           from: "{{colrow}}"
           to: "{{row_net}}"
         adjust:
-          shift: [0, 8.1]
+          shift: [0, -8.7]
       hole_top_left:
         what: mountinghole
         where: 
@@ -228,13 +196,8 @@ pcbs:
           ref: [thumb_sixth_only]
           shift: [-sx/2, sy/2]
       nicenano:
-        what: promicro
-        params:
-          orientation: up
-          type: nicenano
-        adjust.rotate: -90
+        what: rev_nano
         where:
           ref: matrix_inner_top
-          shift: [sx, -9.5]
+          shift: [19.5, -9.5]
           rotate: 0
-      
