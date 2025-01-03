@@ -196,8 +196,26 @@ pcbs:
           ref: [thumb_sixth_only]
           shift: [-sx/2, sy/2]
       nicenano:
-        what: rev_nano_batt
+        what: rev_nano
         where:
           ref: matrix_inner_top
-          shift: [19.25, -9.5]
+          shift: [sx+0.25, -8.5]
           rotate: 0
+      rev_jstph: # Mainly just adds silk screen to both sides of the board to ensure proper polarity
+        what: rev_jstph
+        params:
+          pos: BPOS
+          neg: GND
+        where:
+          ref: matrix_inner_top
+          shift: [sx, -28]
+          #rotate: 180
+      rev_slider: # Adds a power slider to both sides of the board
+        what: rev_slider
+        params:
+          from: BPOS
+          to: RAW
+        where:
+          ref: matrix_inner_top
+          shift: [(1.5*sx)-1, -30]
+          rotate: -90
