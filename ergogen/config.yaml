@@ -2,28 +2,28 @@ meta:
   engine: 4.1.0
 units:
   # Switch spacing
-  sx: 19
-  sy: 19
+  sx: 17.5
+  sy: 16.5
 
   # Set key display size
-  $default_width: 19
-  $default_height: 19
+  $default_width: 17.5
+  $default_height: 16.5
 
   # Switch hole size
   hx: 13.8
   hy: 13.8
 
   # Keycap hole size (top)
-  kx: 17.4
+  kx: 18.4
   ky: 17.4
 
   # Board spacing (extra padding for edges)
-  bx: kx + 2.5
-  by: ky + 2.5
+  bx: kx + 2.6
+  by: ky + 2.6
 
   # external size
-  ex: sx + 3.55
-  ey: sy + 3.55
+  ex: sx + 3.65
+  ey: sy + 3.65
 
 points:
   key:
@@ -195,7 +195,7 @@ pcbs:
           to: "{{row_net}}"
         adjust:
           rotate: 180
-          shift: [0, -9.5]
+          shift: [0, -9]
       thumb_diodes:
         what: diode
         where: /thumb_(third|fourth|fifth|sixth)_only/
@@ -204,7 +204,7 @@ pcbs:
           to: "{{row_net}}"
         adjust:
           rotate: 180
-          shift: [0, 9]
+          shift: [0, 8]
       outside_diode:
         what: diode
         where: thumb_first_only
@@ -213,7 +213,7 @@ pcbs:
           to: "{{row_net}}"
         adjust:
           rotate: -90
-          shift: [sx+15, 0]
+          shift: [sx+15, -2]
       pinky_diode:
         what: diode
         where: thumb_second_only
@@ -222,7 +222,7 @@ pcbs:
           to: "{{row_net}}"
         adjust:
           rotate: -90
-          shift: [12, 0]
+          shift: [12, -2]
       hole_top_left:
         what: ceoloide/mounting_hole_npth
         where: 
@@ -241,7 +241,7 @@ pcbs:
           reverse_mount: true
         where:
           ref: matrix_inner_top
-          shift: [sx, -8.1]
+          shift: [sx+1.4, -8.1]
           rotate: 0
       nice_view:
         what: ceoloide/display_nice_view
@@ -253,7 +253,7 @@ pcbs:
           CS: P1
         where:
           ref: matrix_inner_top
-          shift: [sx+0.4, -11]
+          shift: [sx+1, -11]
       jstph:
         what: ceoloide/battery_connector_jst_ph_2
         params:
@@ -263,8 +263,8 @@ pcbs:
           BAT_N: GND
         where:
           ref: thumb_sixth_only
-          shift: [0, sy/2+15]
-          rotate: 0
+          shift: [4, sy/2+8.5]
+          rotate: -90
       on_off:
         what: ceoloide/power_switch_smd_side
         params:
@@ -275,7 +275,7 @@ pcbs:
           to: RAW
         where:
           ref: thumb_sixth_only
-          shift: [8.25, sy/2+16]
+          shift: [8.475, sy/2+9.5]
           rotate: 0
       reset:
         what: ceoloide/reset_switch_smd_side
@@ -286,5 +286,5 @@ pcbs:
           to: RST
         where:
           ref: thumb_sixth_only
-          shift: [8, sy/2+4]
+          shift: [8.65, sy/2]
           rotate: -90
