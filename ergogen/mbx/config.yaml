@@ -2,8 +2,8 @@ meta:
   engine: 4.1.0
 units:
   # Switch spacing
-  sx: 18
-  sy: 17
+  sx: 18.5
+  sy: 17.5
 
   # Set key display size
   $default_width: 17.5
