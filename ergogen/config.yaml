@@ -2,8 +2,8 @@ meta:
   engine: 4.1.0
 units:
   # Switch spacing
-  sx: 17.5
-  sy: 16.5
+  sx: 18
+  sy: 17
 
   # Set key display size
   $default_width: 17.5
@@ -14,16 +14,16 @@ units:
   hy: 13.8
 
   # Keycap hole size (top)
-  kx: 18.4
-  ky: 17.4
+  kx: 17.5
+  ky: 16.5
 
   # Board spacing (extra padding for edges)
-  bx: kx + 2.6
-  by: ky + 2.6
+  bx: kx + 2.7
+  by: ky + 2.7
 
   # external size
-  ex: sx + 3.65
-  ey: sy + 3.65
+  ex: sx + 3.8
+  ey: sy + 3.8
 
 points:
   key:
@@ -241,7 +241,7 @@ pcbs:
           reverse_mount: true
         where:
           ref: matrix_inner_top
-          shift: [sx+1.4, -8.1]
+          shift: [sx+0.5, -8.1]
           rotate: 0
       nice_view:
         what: ceoloide/display_nice_view
@@ -263,7 +263,7 @@ pcbs:
           BAT_N: GND
         where:
           ref: thumb_sixth_only
-          shift: [4, sy/2+8.5]
+          shift: [3, sy/2+9]
           rotate: -90
       on_off:
         what: ceoloide/power_switch_smd_side
@@ -275,7 +275,7 @@ pcbs:
           to: RAW
         where:
           ref: thumb_sixth_only
-          shift: [8.475, sy/2+9.5]
+          shift: [8, sy/2+9]
           rotate: 0
       reset:
         what: ceoloide/reset_switch_smd_side
@@ -286,5 +286,5 @@ pcbs:
           to: RST
         where:
           ref: thumb_sixth_only
-          shift: [8.65, sy/2]
+          shift: [8.15, sy/2]
           rotate: -90
