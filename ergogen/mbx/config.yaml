@@ -22,8 +22,8 @@ units:
   by: ky + 2.7
 
   # external size
-  ex: sx + 3.8
-  ey: sy + 3.8
+  ex: sx + 4.3
+  ey: sy + 4.3
 
 points:
   key:
@@ -147,11 +147,11 @@ outlines:
         - ref: matrix_middle_top
           shift: [ex/2, ey/2]
         - ref: matrix_inner_top
-          shift: [ex/2+sy, ey/2]
+          shift: [ex/2+sx, ey/2]
         - ref: thumb_sixth_only
           shift: [ex/2, -ey/2]
         - ref: thumb_third_only
-          shift: [-sx/2-e/2, -ey/2]
+          shift: [-sx/2-ex/2, -ey/2]
         - ref: matrix_outer_bottom
           shift: [-ex/2, -(sy + ey/2)]
       fillet: 4
