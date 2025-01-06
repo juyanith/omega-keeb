@@ -151,7 +151,7 @@ outlines:
         - ref: thumb_sixth_only
           shift: [ex/2, -ey/2]
         - ref: thumb_third_only
-          shift: [-sx/2-ex/2, -ey/2]
+          shift: [-ex/2, -ey/2]
         - ref: matrix_outer_bottom
           shift: [-ex/2, -(sy + ey/2)]
       fillet: 4
